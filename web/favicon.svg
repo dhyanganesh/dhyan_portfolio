@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background with rounded corners -->
+  <rect width="32" height="32" rx="6" fill="#0F0F13"/>
+
+  <!-- Nested triangles — mirrors the hero section geometric logo -->
+  <!-- Outermost: faintest -->
+  <polygon points="16,3 2,27 30,27"
+    fill="none" stroke="#E8705A" stroke-width="1.2"
+    stroke-linejoin="round" opacity="0.25"/>
+  <!-- Mid-outer -->
+  <polygon points="16,7 5,25 27,25"
+    fill="none" stroke="#E8705A" stroke-width="1.2"
+    stroke-linejoin="round" opacity="0.45"/>
+  <!-- Mid-inner -->
+  <polygon points="16,11 8,23 24,23"
+    fill="none" stroke="#E8705A" stroke-width="1.2"
+    stroke-linejoin="round" opacity="0.7"/>
+  <!-- Innermost: brightest -->
+  <polygon points="16,15 11,21 21,21"
+    fill="none" stroke="#E8705A" stroke-width="1.4"
+    stroke-linejoin="round" opacity="1"/>
+</svg>
