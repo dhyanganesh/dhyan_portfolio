@@ -58,7 +58,7 @@ class _ContactCard extends StatelessWidget {
             border: Border.all(color: AppTheme.border),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -82,7 +82,7 @@ class _ContactCard extends StatelessWidget {
                         flex: 1,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppTheme.surface.withOpacity(0.3),
+                            color: AppTheme.surface.withValues(alpha: 0.3),
                             border: const Border(
                               left: BorderSide(color: AppTheme.border),
                             ),
@@ -105,7 +105,7 @@ class _ContactCard extends StatelessWidget {
                     // Right side form
                     Container(
                       decoration: BoxDecoration(
-                        color: AppTheme.surface.withOpacity(0.3),
+                        color: AppTheme.surface.withValues(alpha: 0.3),
                         border: const Border(
                           top: BorderSide(color: AppTheme.border),
                         ),
@@ -202,7 +202,7 @@ class _ContactInfo extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.surface,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppTheme.border.withOpacity(0.5)),
+            border: Border.all(color: AppTheme.border.withValues(alpha: 0.5)),
           ),
           child: Icon(icon, color: AppTheme.foreground, size: 20),
         ),
@@ -395,7 +395,7 @@ class _PlusIcon extends StatelessWidget {
       color: AppTheme.background,
       child: Icon(
         LucideIcons.plus,
-        color: AppTheme.fgMuted.withOpacity(0.5),
+        color: AppTheme.fgMuted.withValues(alpha: 0.5),
         size: 24,
       ),
     );

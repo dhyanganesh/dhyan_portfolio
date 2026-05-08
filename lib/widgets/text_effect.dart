@@ -65,7 +65,7 @@ class _TextEffectState extends State<TextEffect> with SingleTickerProviderStateM
 
   Duration _calculateTotalDuration() {
     // Only stagger non-space characters
-    final nonSpaceCount = _segments.where((s) => s.trim().length > 0).length;
+    final nonSpaceCount = _segments.where((s) => s.trim().isNotEmpty).length;
     final double totalMs = widget.duration.inMilliseconds + (nonSpaceCount * widget.staggerDelay * 1000);
     return Duration(milliseconds: totalMs.toInt());
   }

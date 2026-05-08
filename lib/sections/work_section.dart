@@ -22,7 +22,7 @@ class WorkSection extends StatelessWidget {
         children: [
           _SectionTitle(title: 'Work.'),
           const SizedBox(height: 40),
-          if (isDesktop) _DesktopWorkGrid() else _MobileWorkGrid(),
+          if (isDesktop) const _DesktopWorkGrid() else const _MobileWorkGrid(),
           const SizedBox(height: 60),
           _ContactTeaser(),
         ],
@@ -32,6 +32,8 @@ class WorkSection extends StatelessWidget {
 }
 
 class _DesktopWorkGrid extends StatelessWidget {
+  const _DesktopWorkGrid();
+
   @override
   Widget build(BuildContext context) {
     const jobs = _workItems;
@@ -58,6 +60,8 @@ class _DesktopWorkGrid extends StatelessWidget {
 }
 
 class _MobileWorkGrid extends StatelessWidget {
+  const _MobileWorkGrid();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,7 +85,7 @@ class _WorkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridCard(
-      height: fullWidth ? 240.0 : 280.0,
+      height: fullWidth ? 240.0 : null,
       padding: const EdgeInsets.all(28),
       child: fullWidth
           ? Row(
@@ -173,15 +177,12 @@ class _WorkCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Expanded(
-                  child: Text(
-                    job.description,
-                    style: GoogleFonts.spaceMono(
-                      color: AppTheme.fgNav,
-                      fontSize: 13,
-                      height: 1.6,
-                    ),
-                    overflow: TextOverflow.fade,
+                Text(
+                  job.description,
+                  style: GoogleFonts.spaceMono(
+                    color: AppTheme.fgNav,
+                    fontSize: 13,
+                    height: 1.6,
                   ),
                 ),
               ],

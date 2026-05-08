@@ -62,10 +62,11 @@ class _FlippingCardState extends State<FlippingCard>
       onExit: (_) => _onHover(false),
       child: GestureDetector(
         onTap: () {
-          if (_controller.isCompleted)
+          if (_controller.isCompleted) {
             _controller.reverse();
-          else
+          } else {
             _controller.forward();
+          }
         },
         child: AnimatedBuilder(
           animation: _animation,

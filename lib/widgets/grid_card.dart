@@ -48,7 +48,7 @@ class _GridCardState extends State<GridCard> with SingleTickerProviderStateMixin
       cursor: SystemMouseCursors.click,
       child: Container(
         width: widget.width,
-        height: widget.height ?? double.infinity,
+        height: widget.height,
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF0F0F13) : Colors.white,
@@ -127,12 +127,11 @@ class _GridCardState extends State<GridCard> with SingleTickerProviderStateMixin
               ),
             ),
             
-            // Foreground Content
-            Positioned.fill(
-              child: Padding(
-                padding: widget.padding,
-                child: widget.child,
-              ),
+            // Foreground Content — regular (non-Positioned) child so the Stack
+            // can measure its height when no explicit height is provided.
+            Padding(
+              padding: widget.padding,
+              child: widget.child,
             ),
           ],
         ),

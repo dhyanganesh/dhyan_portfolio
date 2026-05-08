@@ -34,52 +34,53 @@ class _NavBarState extends State<NavBar> {
     super.dispose();
   }
 
+  Widget _buildBar() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: _scrolled
+            ? AppTheme.background.withValues(alpha: 0.88)
+            : Colors.transparent,
+        border: _scrolled
+            ? const Border(
+                bottom: BorderSide(color: AppTheme.border, width: 1))
+            : null,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Dhyan.',
+            style: GoogleFonts.spaceMono(
+              color: AppTheme.foreground,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+            ),
+          ),
+          _HamburgerButton(onTap: widget.onMenuTap),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
       top: 0,
       left: 0,
       right: 0,
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: _scrolled ? 14 : 0,
-            sigmaY: _scrolled ? 14 : 0,
-          ),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            decoration: BoxDecoration(
-              color: _scrolled
-                  ? AppTheme.background.withValues(alpha: 0.88)
-                  : Colors.transparent,
-              border: _scrolled
-                  ? const Border(
-                      bottom: BorderSide(color: AppTheme.border, width: 1))
-                  : null,
-            ),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Logo
-                Text(
-                  'Dhyan.',
-                  style: GoogleFonts.spaceMono(
-                    color: AppTheme.foreground,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-
-                // Hamburger button
-                _HamburgerButton(onTap: widget.onMenuTap),
-              ],
-            ),
-          ),
-        ),
-      ),
+      // Only apply BackdropFilter when scrolled — a sigma-0 filter still
+      // forces a composited layer and costs GPU bandwidth every frame.
+      child: _scrolled
+          ? ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                child: _buildBar(),
+              ),
+            )
+          : _buildBar(),
     );
   }
 }

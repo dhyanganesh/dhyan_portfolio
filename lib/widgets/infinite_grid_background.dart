@@ -11,7 +11,7 @@ class InfiniteGridBackground extends StatefulWidget {
 
 class _InfiniteGridBackgroundState extends State<InfiniteGridBackground> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  Offset _mousePos = Offset.zero;
+  late Listenable _spotlightListenable;
 
   @override
   void initState() {
@@ -21,20 +21,11 @@ class _InfiniteGridBackgroundState extends State<InfiniteGridBackground> with Si
       vsync: this,
       duration: const Duration(seconds: 4),
     )..repeat();
-    widget.mouseNotifier.addListener(_onMouseUpdate);
-  }
-
-  void _onMouseUpdate() {
-    if (mounted) {
-      setState(() {
-        _mousePos = widget.mouseNotifier.value;
-      });
-    }
+    _spotlightListenable = Listenable.merge([_controller, widget.mouseNotifier]);
   }
 
   @override
   void dispose() {
-    widget.mouseNotifier.removeListener(_onMouseUpdate);
     _controller.dispose();
     super.dispose();
   }
@@ -44,21 +35,23 @@ class _InfiniteGridBackgroundState extends State<InfiniteGridBackground> with Si
     return Stack(
         fit: StackFit.expand,
         children: [
-          // Base Ambient Orbs (Blurred elements)
+          // Base Ambient Orbs (Blurred elements) — wrapped in RepaintBoundary
+          // so their expensive blur layer is cached and not re-rasterized on
+          // every animation tick or mouse move.
           Positioned(
             right: -100,
             top: -100,
-            child: _buildOrb(Colors.orange[800]!.withValues(alpha: 0.3), 400),
+            child: RepaintBoundary(child: _buildOrb(Colors.orange[800]!.withValues(alpha: 0.3), 400)),
           ),
           Positioned(
             right: MediaQuery.of(context).size.width * 0.1,
             top: -50,
-            child: _buildOrb(Colors.purple[700]!.withValues(alpha: 0.2), 300),
+            child: RepaintBoundary(child: _buildOrb(Colors.purple[700]!.withValues(alpha: 0.2), 300)),
           ),
           Positioned(
             left: -100,
             bottom: -200,
-            child: _buildOrb(Colors.blue[800]!.withValues(alpha: 0.3), 500),
+            child: RepaintBoundary(child: _buildOrb(Colors.blue[800]!.withValues(alpha: 0.3), 500)),
           ),
 
           // Layer 1: Very faint background infinite grid
@@ -74,15 +67,16 @@ class _InfiniteGridBackgroundState extends State<InfiniteGridBackground> with Si
 
           // Layer 2: Mouse-tracking spotlight grid mask
           AnimatedBuilder(
-            animation: _controller,
+            animation: _spotlightListenable,
             builder: (context, _) {
+              final mousePos = widget.mouseNotifier.value;
               return ShaderMask(
                 blendMode: BlendMode.dstIn,
                 shaderCallback: (bounds) {
                   return RadialGradient(
                     center: Alignment(
-                      (_mousePos.dx - bounds.width / 2) / (bounds.width / 2) * 2,
-                      (_mousePos.dy - bounds.height / 2) / (bounds.height / 2) * 2,
+                      (mousePos.dx - bounds.width / 2) / (bounds.width / 2) * 2,
+                      (mousePos.dy - bounds.height / 2) / (bounds.height / 2) * 2,
                     ),
                     radius: 400 / bounds.width, // roughly 400px radial glow
                     colors: const [Colors.black, Colors.transparent],
